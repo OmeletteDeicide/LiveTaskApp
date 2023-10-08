@@ -9,9 +9,13 @@ import {
 const MainScreen = ({ navigation }) => {
   const [columns, setColumns] = useState([]);
   const [newColumnName, setNewColumnName] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [newTaskContent, setNewTaskContent] = useState("");
   const handleLogout = () => {
     navigation.navigate("LoginScreen");
   };
+
+  // handle CRUD Columnn
   const handleColumnNameChange = (text) => {
     setNewColumnName(text);
   };
@@ -23,6 +27,26 @@ const MainScreen = ({ navigation }) => {
     }
     const updatedColumns = columns.filter((column) => column.id !== columnId);
     setColumns(updatedColumns);
+  };
+
+  // handle CRUD Task
+
+  const handleCreateTask = async () => {
+    if (selectedColumn && newTaskContent) {
+      await createTask(newTaskContent, selectedColumn);
+      loadTasksForColumn(selectedColumn);
+      setNewTaskContent(""); // Effacer le champ de saisie
+    }
+  };
+
+  const handleUpdateTask = async (taskId, newContent) => {
+    await updateTask(taskId, newContent);
+    loadTasksForColumn(selectedColumn);
+  };
+
+  const handleDeleteTask = async (taskId) => {
+    await deleteTask(taskId);
+    loadTasksForColumn(selectedColumn);
   };
 
   useEffect(() => {

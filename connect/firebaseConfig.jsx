@@ -119,7 +119,7 @@ const createTask = async (taskContent, columnId) => {
   };
 
   try {
-    const docRef = await addDoc(collection(db, "livetask_db"), newTaskData);
+    const docRef = await addDoc(collection(db, "task"), newTaskData);
     return docRef.id;
   } catch (error) {
     console.error("Erreur lors de la création de la tâche :", error);
@@ -128,7 +128,7 @@ const createTask = async (taskContent, columnId) => {
 };
 
 const fetchTasksForColumn = async (columnId) => {
-  const tasksRef = collection(db, "livetask_db");
+  const tasksRef = collection(db, "task");
   const queryByColumn = query(tasksRef, where("id_column", "==", columnId));
   const querySnapshot = await getDocs(queryByColumn);
   const tasks = [];
@@ -141,7 +141,7 @@ const fetchTasksForColumn = async (columnId) => {
 };
 
 const updateTask = async (taskId, newContent) => {
-  const taskRef = doc(db, "livetask_db", taskId);
+  const taskRef = doc(db, "task", taskId);
   const updatedData = {
     content: newContent,
   };
@@ -154,7 +154,7 @@ const updateTask = async (taskId, newContent) => {
 };
 
 const deleteTask = async (taskId) => {
-  const taskRef = doc(db, "livetask_db", taskId);
+  const taskRef = doc(db, "task", taskId);
 
   try {
     await deleteDoc(taskRef);
